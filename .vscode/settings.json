@@ -1,9 +1,17 @@
 {
   "prettier.enable": false,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "editor.codeActionsOnSave": {
-    "source.fixAll.eslint": true
+    "source.fixAll.eslint": true,
+    "source.organizeImports": false
   },
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "markdown",
+    "json",
+    "yaml"
+  ],
   "cSpell.words": [
     "ohash"
   ]

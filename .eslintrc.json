@@ -1,5 +1,5 @@
 {
-  "extends": "@antfu/eslint-config-ts",
+  "extends": "@antfu/eslint-config",
   "rules": {
     "no-console": "off",
     "n/prefer-global/process": "off",
