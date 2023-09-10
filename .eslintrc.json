@@ -1,0 +1,8 @@
+{
+  "extends": "@antfu/eslint-config-ts",
+  "rules": {
+    "no-console": "off",
+    "unicorn/throw-new-error": "off",
+    "@typescript-eslint/keyword-spacing": "off"
+  }
+}
