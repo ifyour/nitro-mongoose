@@ -1,4 +1,5 @@
 import { useValidatedBody } from 'h3-zod'
+import { sha256 } from 'ohash'
 
 export default defineEventHandler(async (event) => {
   const { username, password, email } = await useValidatedBody(event, z.object({
@@ -17,7 +18,7 @@ export default defineEventHandler(async (event) => {
   }
 
   try {
-    const newUser = await User.create({ username, password, email })
+    const newUser = await User.create({ username, password: sha256(password), email })
 
     const user = {
       id: `${newUser._id}`,

@@ -1,4 +1,5 @@
 import { useValidatedBody } from 'h3-zod'
+import { sha256 } from 'ohash'
 
 export default defineEventHandler(async (event) => {
   const { username, password } = await useValidatedBody(event, z.object({
@@ -14,7 +15,7 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  const currentUser = await User.findOne({ username, password })
+  const currentUser = await User.findOne({ username, password: sha256(password) })
   if (!currentUser) {
     return {
       success: false,
