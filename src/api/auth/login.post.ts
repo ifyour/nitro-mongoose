@@ -2,24 +2,30 @@ import { useValidatedBody } from 'h3-zod'
 import { sha256 } from 'ohash'
 
 export default defineEventHandler(async (event) => {
-  const { username, password } = await useValidatedBody(event, z.object({
-    username: z.string(),
-    password: z.string(),
-  }))
+  const { username, password } = await useValidatedBody(
+    event,
+    z.object({
+      username: z.string(),
+      password: z.string(),
+    }),
+  )
 
   const hasUser = await User.findOne({ username })
   if (!hasUser) {
     return {
       success: false,
-      message: 'User not found'
+      message: 'User not found',
     }
   }
 
-  const currentUser = await User.findOne({ username, password: sha256(password) })
+  const currentUser = await User.findOne({
+    username,
+    password: sha256(password),
+  })
   if (!currentUser) {
     return {
       success: false,
-      message: 'Invalid password'
+      message: 'Invalid password',
     }
   }
 
@@ -34,9 +40,10 @@ export default defineEventHandler(async (event) => {
 
     return {
       success: true,
-      data: user
+      data: user,
     }
-  } catch {
+  }
+  catch {
     throw InternalError('Something went wrong')
   }
 })

@@ -2,23 +2,30 @@ import { useValidatedBody } from 'h3-zod'
 import { sha256 } from 'ohash'
 
 export default defineEventHandler(async (event) => {
-  const { username, password, email } = await useValidatedBody(event, z.object({
-    username: z.string(),
-    password: z.string(),
-    email: z.string().email(),
-  }))
+  const { username, password, email } = await useValidatedBody(
+    event,
+    z.object({
+      username: z.string(),
+      password: z.string(),
+      email: z.string().email(),
+    }),
+  )
 
   const users = await User.find()
 
   if (users.find(user => user.username === username)?.username) {
     return {
       success: false,
-      message: 'Username already taken'
+      message: 'Username already taken',
     }
   }
 
   try {
-    const newUser = await User.create({ username, password: sha256(password), email })
+    const newUser = await User.create({
+      username,
+      password: sha256(password),
+      email,
+    })
 
     const user = {
       id: `${newUser._id}`,
@@ -30,10 +37,10 @@ export default defineEventHandler(async (event) => {
 
     return {
       success: true,
-      data: user
+      data: user,
     }
-
-  } catch {
+  }
+  catch {
     throw InternalError('Something went wrong')
   }
 })

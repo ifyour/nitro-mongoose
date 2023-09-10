@@ -8,9 +8,10 @@ export default defineEventHandler(async () => {
         id: movie._id,
         title: movie.title,
         description: movie.description,
-      }))
+      })),
     }
-  } catch {
+  }
+  catch {
     throw InternalError('Something went wrong')
   }
 })

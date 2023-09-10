@@ -2,6 +2,7 @@
   "extends": "@antfu/eslint-config-ts",
   "rules": {
     "no-console": "off",
+    "n/prefer-global/process": "off",
     "unicorn/throw-new-error": "off",
     "@typescript-eslint/keyword-spacing": "off"
   }

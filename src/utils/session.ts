@@ -2,9 +2,9 @@ import type { H3Event } from 'h3'
 
 export interface UserSession {
   user?: {
-    id: string;
-    username: string;
-    email: string;
+    id: string
+    username: string
+    email: string
   }
 }
 
@@ -26,21 +26,26 @@ export async function clearUserSession(event: H3Event) {
 
 export async function requireUserSession(event: H3Event) {
   const userSession = await getUserSession(event, true)
-  if (!userSession.user) {
+  if (!userSession.user)
     throw NotAuthenticated('Unauthorized')
-  }
+
   return userSession
 }
 
 function useSessionWarper(event: H3Event, ignoreCookie = false) {
-  let sessionConfig: ArgumentsType<typeof useSession>[1] = useRuntimeConfig(event).session
+  let sessionConfig: ArgumentsType<typeof useSession>[1]
+    = useRuntimeConfig(event).session
 
   if (!sessionConfig.password) {
-    console.warn('No session password set, please set SESSION_PASSWORD in your .env file with at least 32 chars')
+    console.warn(
+      'No session password set, please set SESSION_PASSWORD in your .env file with at least 32 chars',
+    )
   }
 
   if (ignoreCookie) {
-    sessionConfig = { ...sessionConfig, cookie: false }
+    sessionConfig = {
+      ...sessionConfig, cookie: false,
+    }
   }
 
   return useSession(event, sessionConfig)

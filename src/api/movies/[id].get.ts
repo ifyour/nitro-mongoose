@@ -8,7 +8,7 @@ export default defineEventHandler(async (event) => {
   if (!movie) {
     return {
       success: false,
-      message: 'Movie not found'
+      message: 'Movie not found',
     }
   }
 
@@ -18,6 +18,6 @@ export default defineEventHandler(async (event) => {
       id: movie._id,
       title: movie.title,
       description: movie.description,
-    }
+    },
   }
 })

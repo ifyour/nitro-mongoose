@@ -10,13 +10,8 @@ export default defineNitroConfig({
   },
 
   imports: {
-    dirs: [
-      './src/composables/**',
-      './src/models/**',
-    ],
-    presets: [
-      { from: 'zod', imports: ['z'] },
-    ],
+    dirs: ['./src/composables/**', './src/models/**'],
+    presets: [{ from: 'zod', imports: ['z'] }],
   },
 
   plugins: ['~/plugins/mongoose.ts'],
@@ -25,7 +20,7 @@ export default defineNitroConfig({
     MONGODB_URI: process.env.MONGODB_URI,
     session: {
       name: 'nitro-session',
-      password: process.env.SESSION_PASSWORD
-    }
+      password: process.env.SESSION_PASSWORD,
+    },
   },
 })
