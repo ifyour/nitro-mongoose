@@ -10,7 +10,10 @@ export default defineEventHandler(async (event) => {
   const users = await User.find()
 
   if (users.find(user => user.username === username)?.username) {
-    throw Conflict('Username already taken')
+    return {
+      success: false,
+      message: 'Username already taken'
+    }
   }
 
   try {
@@ -24,7 +27,10 @@ export default defineEventHandler(async (event) => {
 
     await setUserSession(event, { user })
 
-    return user
+    return {
+      success: true,
+      data: user
+    }
 
   } catch {
     throw InternalError('Something went wrong')

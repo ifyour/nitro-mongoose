@@ -9,7 +9,7 @@ export default defineEventHandler(async (event) => {
   const movie = await Movie.findById({ _id: id })
 
   if (!movie) {
-    throw NotFound('Movie not found')
+    return { success: false, message: 'Movie not found' }
   }
 
   const response = await Movie.deleteOne({ _id: id })
