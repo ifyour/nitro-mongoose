@@ -1,3 +1,12 @@
 export default eventHandler(async (event) => {
-  return await requireUserSession(event)
+  try {
+    const { user } = await requireUserSession(event)
+    return {
+      success: true,
+      data: user,
+    }
+  }
+  catch (error) {
+    throw createError(error)
+  }
 })
