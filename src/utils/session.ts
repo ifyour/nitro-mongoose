@@ -14,38 +14,31 @@ export async function setUserSession(event: H3Event, data: UserSession) {
   return session.data as UserSession
 }
 
-export async function getUserSession(event: H3Event, ignoreCookie?: boolean) {
-  return (await useSessionWarper(event, ignoreCookie)).data as UserSession
+export async function getUserSession(event: H3Event, config?: Partial<SessionConfig>) {
+  return (await useSessionWarper(event, config)).data as UserSession
 }
 
 export async function clearUserSession(event: H3Event) {
-  const session = await useSessionWarper(event, true)
+  const session = await useSessionWarper(event, { cookie: false })
   await session.clear()
   return true
 }
 
 export async function requireUserSession(event: H3Event) {
-  const userSession = await getUserSession(event, true)
+  const userSession = await getUserSession(event, { cookie: false })
   if (!userSession.user)
     throw NotAuthenticated('Unauthorized')
-
   return userSession
 }
 
-function useSessionWarper(event: H3Event, ignoreCookie = false) {
-  let sessionConfig: ArgumentsType<typeof useSession>[1]
-    = useRuntimeConfig(event).session
+function useSessionWarper(event: H3Event, config?: Partial<SessionConfig>) {
+  const initConfig: SessionConfig = useRuntimeConfig(event).session
+  const sessionConfig: SessionConfig = { ...initConfig, maxAge: 60 * 60 * 24, ...config }
 
   if (!sessionConfig.password) {
     console.warn(
       'No session password set, please set SESSION_PASSWORD in your .env file with at least 32 chars',
     )
-  }
-
-  if (ignoreCookie) {
-    sessionConfig = {
-      ...sessionConfig, cookie: false,
-    }
   }
 
   return useSession(event, sessionConfig)
