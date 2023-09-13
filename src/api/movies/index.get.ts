@@ -11,7 +11,7 @@ export default defineEventHandler(async () => {
       })),
     }
   }
-  catch {
-    throw InternalError('Something went wrong')
+  catch (error) {
+    throw createError(error)
   }
 })
