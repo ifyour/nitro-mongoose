@@ -5,6 +5,7 @@
     "source.fixAll.eslint": true,
     "source.organizeImports": false
   },
+  "consoleLog.Show Semi": false,
   "eslint.validate": [
     "javascript",
     "typescript",
