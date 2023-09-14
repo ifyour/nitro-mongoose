@@ -14,26 +14,25 @@ export async function setUserSession(event: H3Event, data: UserSession) {
   return session.data as UserSession
 }
 
-export async function getUserSession(event: H3Event, config?: Partial<SessionConfig>) {
-  return (await useSessionWarper(event, config)).data as UserSession
+export async function getUserSession(event: H3Event) {
+  return (await useSessionWarper(event)).data as UserSession
 }
 
 export async function clearUserSession(event: H3Event) {
-  const session = await useSessionWarper(event, { cookie: false })
+  const session = await useSessionWarper(event)
   await session.clear()
   return true
 }
 
 export async function requireUserSession(event: H3Event) {
-  const userSession = await getUserSession(event, { cookie: false })
+  const userSession = await getUserSession(event)
   if (!userSession.user)
     throw NotAuthenticated('Unauthorized')
   return userSession
 }
 
-function useSessionWarper(event: H3Event, config?: Partial<SessionConfig>) {
-  const initConfig: SessionConfig = useRuntimeConfig(event).session
-  const sessionConfig: SessionConfig = { ...initConfig, maxAge: 60 * 60 * 24, ...config }
+async function useSessionWarper(event: H3Event) {
+  const sessionConfig: SessionConfig = useRuntimeConfig(event).session
 
   if (!sessionConfig.password) {
     console.warn(

@@ -20,6 +20,8 @@ export default defineNitroConfig({
     MONGODB_URI: process.env.MONGODB_URI,
     session: {
       name: 'nitro-session',
+      // Session expires in 7 days
+      maxAge: 604800,
       password: process.env.SESSION_PASSWORD,
     },
   },
