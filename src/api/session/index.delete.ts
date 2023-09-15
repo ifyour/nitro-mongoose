@@ -1,14 +1,9 @@
 export default eventHandler(async (event) => {
-  try {
-    const { user } = await getUserSession(event)
-    if (user) {
-      await clearUserSession(event)
-      deleteCookie(event, useRuntimeConfig().session.name)
-      return { success: true, message: 'Logged out' }
-    }
-    return { success: false, message: 'Currently not logged in' }
+  const { user } = await getUserSession(event)
+  if (user) {
+    await clearUserSession(event)
+    deleteCookie(event, useRuntimeConfig().session.name)
+    return { success: true, message: 'Logged out' }
   }
-  catch (error) {
-    throw createError(error)
-  }
+  return { success: false, message: 'Currently not logged in' }
 })
