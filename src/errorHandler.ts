@@ -11,6 +11,9 @@ export default <NitroErrorHandler>function (error, event) {
     data: data?.issues,
   }
 
+  if (process.env.CURRENT_ENV === 'dev')
+    console.log('[Nitro Error Stack]', error.cause)
+
   res.writeHead(200, { 'Content-Type': 'application/json' })
   res.end(JSON.stringify(response))
 }
