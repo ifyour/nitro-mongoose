@@ -5,17 +5,16 @@ const TWO_HOURS = 2 * 60 * 60 * 1000
 export const OTP_LENGTH = 10
 
 export default defineEventHandler(async (event) => {
-  const userSession = await requireUserSession(event)
-
   const { email } = await useValidatedBody(
     event,
     z.object({ email: z.string().email() }),
   )
 
-  if (userSession.user.email !== email) {
+  const hasUser = await User.findOne({ email })
+  if (!hasUser) {
     return {
       success: false,
-      message: 'Incorrect email address',
+      message: 'Mail not found',
     }
   }
 
@@ -28,7 +27,6 @@ export default defineEventHandler(async (event) => {
 
   return {
     success: true,
-    message: 'OTP sent successfully',
-    data: otp,
+    message: 'OTP sent successfully, please check your e-mail.',
   }
 })

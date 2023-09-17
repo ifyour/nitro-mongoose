@@ -12,10 +12,10 @@ export default defineEventHandler(async (event) => {
   )
 
   const users = await User.find()
-  if (users.find(user => user.username === username)?.username) {
+  if (users.find(user => user.email === email)?.email) {
     return {
       success: false,
-      message: 'Username already taken',
+      message: 'Email Already Registered',
     }
   }
 
