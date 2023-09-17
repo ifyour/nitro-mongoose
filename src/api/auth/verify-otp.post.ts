@@ -2,7 +2,7 @@ import { useValidatedBody } from 'h3-zod'
 import { OTP_LENGTH } from './send-otp.post'
 
 export default defineEventHandler(async (event) => {
-  await requireUserSession(event)
+  const userSession = await requireUserSession(event)
 
   const { email, otp } = await useValidatedBody(
     event,
@@ -16,6 +16,7 @@ export default defineEventHandler(async (event) => {
   const user = await User.findOne({ email, otp, otpExpiresAt: { $gt: new Date() } })
 
   if (user) {
+    await User.findOneAndUpdate({ username: userSession.user.username }, { otpExpiresAt: new Date(), otp: '' })
     return {
       success: true,
       message: 'OTP verification successful',
