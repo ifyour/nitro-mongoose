@@ -23,7 +23,8 @@ export default defineEventHandler(async (event) => {
 
   await User.findOneAndUpdate({ email }, { otp, otpExpiresAt }, { upsert: true })
 
-  // Todo：Send OTP code to email
+  // Todo：发送登录验证跳转链接，需要包含的 query 字段有
+  // /auth/callback/email?email=xxx&otp=xxx&callbackUrl=xxx
 
   return {
     success: true,

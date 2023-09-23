@@ -10,11 +10,17 @@ export default defineEventHandler(async (event) => {
     }),
   )
 
-  // Check if TOP is valid，current time is less than expiration time
+  // 检查当前邮箱对应的 OTP 是否有效
   const user = await User.findOne({ email, otp, otpExpiresAt: { $gt: new Date() } })
 
   if (user) {
-    await User.findOneAndUpdate({ email }, { otpExpiresAt: new Date(), otp: '' })
+    // 验证成功，立即失效 OTP
+    await User.findOneAndUpdate({ email }, { otpExpiresAt: new Date() })
+
+    // 更新客户端 cookie 中的 session 信息，标记已登录状态
+    await setUserSession(event, { user: { ...user, id: `${user._id}` } })
+
+    // 返回成功信息，页面内跳转到个人中心或者首页
     return {
       success: true,
       message: 'OTP verification successful',
