@@ -3,7 +3,6 @@ import type { H3Event } from 'h3'
 export interface UserSession {
   user?: {
     id: string
-    username: string
     email: string
   }
 }

@@ -29,11 +29,7 @@ export default defineEventHandler(async (event) => {
     }
   }
 
-  const user = {
-    id: `${currentUser._id}`,
-    username: currentUser.username,
-    email: currentUser.email,
-  }
+  const user = { id: `${currentUser._id}`, email: currentUser.email }
 
   await setUserSession(event, { user })
 
