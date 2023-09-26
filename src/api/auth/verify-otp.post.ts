@@ -29,6 +29,6 @@ export default defineEventHandler(async (event) => {
 
   return {
     success: false,
-    message: 'Invalid OTP',
+    message: 'Invalid OTP or OTP expired',
   }
 })
